@@ -1,19 +1,17 @@
 package dk.jonaslindstrom.ifs.demos;
 
+import dk.jonaslindstrom.ifs.ChaosGame;
+import dk.jonaslindstrom.ifs.image.IO;
+import dk.jonaslindstrom.ifs.image.LogDensity;
+import dk.jonaslindstrom.ifs.transformations.Transformation;
 import java.awt.Dimension;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-
-import dk.jonaslindstrom.ifs.ChaosGame;
-import dk.jonaslindstrom.ifs.image.IO;
-import dk.jonaslindstrom.ifs.image.LogDensity;
-import dk.jonaslindstrom.ifs.transformations.Transformation;
 
 public class LevyCCurve {
 
@@ -29,12 +27,12 @@ public class LevyCCurve {
 		
 		Complex a = new Complex(0.5, 0.5);
 		
-		List<Transformation> functions = new ArrayList<Transformation>();
+		List<Transformation> functions = new ArrayList<>();
 		functions.add(v -> v(c(v).multiply(a)));
 		functions.add(v -> v(a.negate().add(Complex.ONE).multiply(c(v)).add(a)));
 		
 		ChaosGame ff = new ChaosGame(functions);
-		int[][] histogram = ff.chaosGame(new SysoutProgressListener(), 10000, 1000,
+		int[][] histogram = ff.chaosGame(25000, 2500,
 				new Rectangle2D.Double(-0.6, -0.4, 2.2, 1.5), new Dimension(1100, 750));
 		IO.generateImage(histogram, new LogDensity(), new File("lcc.png"));
 	}
