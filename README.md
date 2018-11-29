@@ -6,13 +6,18 @@ This project implements so called iterated function systems and makes it possibl
 Below are outputs from the demos. All source code can be found in the ![demo-folder](src/dk/jonaslindstrom/ifs/demos)
 
 ![Barnsley's fern](bf.png)
+Barnsley's fern.
 
-![Dragons curve](dc.png)
+![Dragon curve](dc.png)
+Drangon curve.
 
 ![Fractal flame](ff.png)
+Fractal flame.
 
 ![Levy C Curve](lcc.png)
+Levy C Curve.
 
 ![Sierpinski's triangle](st.png)
+Sierpinski's triangle.
 
 /Jonas (mail@jonaslindstrom.dk)
