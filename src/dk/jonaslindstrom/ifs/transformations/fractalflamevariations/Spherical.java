@@ -6,9 +6,9 @@ import dk.jonaslindstrom.ifs.transformations.Transformation;
 
 public class Spherical implements Transformation {
 
-	@Override
-	public Vector2D apply(Vector2D p) {
-		return p.scalarMultiply(1.0 / p.getNormSq());
-	}
+  @Override
+  public Vector2D apply(Vector2D p) {
+    return p.scalarMultiply(1.0 / p.getNormSq());
+  }
 
 }

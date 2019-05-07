@@ -15,8 +15,7 @@ public class FractalFlameTransformation implements Transformation {
       List<Transformation> variations, double... weights) {
     Transformation affineTransformation = new AffineTransformation(affineParameters);
 
-    List<Pair<Double, Transformation>> weightedVariations =
-        new LinkedList<>();
+    List<Pair<Double, Transformation>> weightedVariations = new LinkedList<>();
     for (int i = 0; i < variations.size(); i++) {
       weightedVariations.add(new Pair<>(weights[i], variations.get(i)));
     }

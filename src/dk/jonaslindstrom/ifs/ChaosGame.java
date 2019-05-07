@@ -19,9 +19,13 @@ public class ChaosGame {
   private StochasticFunctionSet transformations;
   private Function<Vector2D, Point> toPixel;
 
-  public ChaosGame(StochasticFunctionSet transformations) {
-    this.random = new Random();
+  public ChaosGame(StochasticFunctionSet transformations, Random randomness) {
+    this.random = randomness;
     this.transformations = transformations;
+  }
+
+  public ChaosGame(StochasticFunctionSet transformations) {
+    this(transformations, new Random());
   }
 
   /**
@@ -34,13 +38,19 @@ public class ChaosGame {
    * @param plotArea
    * @param imageSize
    */
+  public ChaosGame(List<Transformation> transformations, Random randomness) {
+    this(buildUniformlyDistributedStochasticFunctionSet(transformations), randomness);
+  }
+
   public ChaosGame(List<Transformation> transformations) {
     this(buildUniformlyDistributedStochasticFunctionSet(transformations));
   }
 
   private static StochasticFunctionSet buildUniformlyDistributedStochasticFunctionSet(
       List<Transformation> transformations) {
+
     List<Pair<Transformation, Double>> uniformlyDistributedTransformation = new ArrayList<>();
+
     for (Transformation transformation : transformations) {
       uniformlyDistributedTransformation.add(new Pair<>(transformation, 1.0));
     }

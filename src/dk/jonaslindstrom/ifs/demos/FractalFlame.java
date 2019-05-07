@@ -18,24 +18,37 @@ import java.util.Random;
 
 public class FractalFlame {
 
-	public static void main(String[] arguments) throws IOException {
-		
-		List<Transformation> variations = new ArrayList<>();
-		variations.add(new Sinusodial());
-		variations.add(new Spherical());
-		variations.add(new Swirl());
-		
-		List<Transformation> functions = new ArrayList<>();
-		for (int i = 0; i < 5; i++) {
-			functions.add(new FractalFlameTransformation(variations, new Random()));
-		}
-		ChaosGame ff = new ChaosGame(functions);
-		
-		long start = System.currentTimeMillis();
-		int[][] histogram = ff.chaosGame(10000, 2000,
-				new Rectangle2D.Double(-5.0, -5.0, 10.0, 10.0), new Dimension(800, 800));
-		IO.generateImage(histogram, new LogDensity(), new File("ff/ff.png"));
-		System.out.println("Took " + (System.currentTimeMillis() - start) + "ms");
-	}
+  public static void main(String[] arguments) throws IOException {
+
+    long seed = 1234;
+    Random r = new Random();
+    int n = 25;
+    for (int j = 0; j < n; j++) {
+      seed = r.nextLong();
+      
+      List<Transformation> variations = new ArrayList<>();
+      variations.add(new Sinusodial());
+      variations.add(new Spherical());
+      variations.add(new Swirl());
+
+      Random random = new Random(seed);
+      List<Transformation> functions = new ArrayList<>();
+      for (int i = 0; i < 5; i++) {
+        functions.add(new FractalFlameTransformation(variations, random));
+      }
+      ChaosGame ff = new ChaosGame(functions);
+
+      long start = System.currentTimeMillis();
+
+      // int[][] histogram = ff.chaosGame(10000, 2000, new Rectangle2D.Double(-1.5, -3.5, 4.0, 5.0),
+      // new Dimension(2480, 3508));
+      int[][] histogram = ff.chaosGame(10000, 2000, new Rectangle2D.Double(-5.0, -5.0, 10.0, 10.0),
+          new Dimension(2480, 3508));
+      IO.generateImage(histogram, new LogDensity(true), new File("ff" + seed + ".png"));
+      System.out.println("Took " + (System.currentTimeMillis() - start) + "ms");
+
+    }
+
+  }
 
 }

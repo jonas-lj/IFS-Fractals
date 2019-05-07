@@ -7,12 +7,12 @@ import dk.jonaslindstrom.ifs.transformations.Transformation;
 
 public class Heart implements Transformation {
 
-	@Override
-	public Vector2D apply(Vector2D t) {
-		double omega = FastMath.atan(t.getX() / t.getY());
-		double r = t.getNorm();
+  @Override
+  public Vector2D apply(Vector2D t) {
+    double omega = FastMath.atan(t.getX() / t.getY());
+    double r = t.getNorm();
 
-		return new Vector2D(FastMath.sin(omega * r), -FastMath.cos(omega*r)).scalarMultiply(r);
-	}
+    return new Vector2D(FastMath.sin(omega * r), -FastMath.cos(omega * r)).scalarMultiply(r);
+  }
 
 }

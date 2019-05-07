@@ -15,26 +15,26 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 public class LevyCCurve {
 
-	private static Complex c(Vector2D v) {
-		return new Complex(v.getX(), v.getY());
-	}
-	
-	private static Vector2D v(Complex c) {
-		return new Vector2D(c.getReal(), c.getImaginary());
-	}
-	
-	public static void main(String[] arguments) throws IOException {
-		
-		Complex a = new Complex(0.5, 0.5);
-		
-		List<Transformation> functions = new ArrayList<>();
-		functions.add(v -> v(c(v).multiply(a)));
-		functions.add(v -> v(a.negate().add(Complex.ONE).multiply(c(v)).add(a)));
-		
-		ChaosGame ff = new ChaosGame(functions);
-		int[][] histogram = ff.chaosGame(25000, 2500,
-				new Rectangle2D.Double(-0.6, -0.4, 2.2, 1.5), new Dimension(1100, 750));
-		IO.generateImage(histogram, new LogDensity(), new File("lcc.png"));
-	}
-	
+  private static Complex c(Vector2D v) {
+    return new Complex(v.getX(), v.getY());
+  }
+
+  private static Vector2D v(Complex c) {
+    return new Vector2D(c.getReal(), c.getImaginary());
+  }
+
+  public static void main(String[] arguments) throws IOException {
+
+    Complex a = new Complex(0.5, 0.5);
+
+    List<Transformation> functions = new ArrayList<>();
+    functions.add(v -> v(c(v).multiply(a)));
+    functions.add(v -> v(a.negate().add(Complex.ONE).multiply(c(v)).add(a)));
+
+    ChaosGame ff = new ChaosGame(functions);
+    int[][] histogram = ff.chaosGame(25000, 2500, new Rectangle2D.Double(-0.6, -0.4, 2.2, 1.5),
+        new Dimension(1100, 750));
+    IO.generateImage(histogram, new LogDensity(), new File("lcc.png"));
+  }
+
 }

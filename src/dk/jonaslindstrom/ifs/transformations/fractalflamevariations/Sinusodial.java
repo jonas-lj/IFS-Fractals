@@ -7,9 +7,9 @@ import dk.jonaslindstrom.ifs.transformations.Transformation;
 
 public class Sinusodial implements Transformation {
 
-	@Override
-	public Vector2D apply(Vector2D p) {
-		return new Vector2D(FastMath.sin(p.getX()), FastMath.sin(p.getY()));
-	}
+  @Override
+  public Vector2D apply(Vector2D p) {
+    return new Vector2D(FastMath.sin(p.getX()), FastMath.sin(p.getY()));
+  }
 
 }
