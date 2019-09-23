@@ -5,6 +5,7 @@
 	<groupId>dk.jonaslindstrom</groupId>
 	<artifactId>IFS</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -26,6 +27,127 @@
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>build-a</id>
+						<configuration>
+							<archive>
+								<manifest>
+									<mainClass>dk.jonaslindstrom.ifs.demos.BarnsleysFern</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<finalName>barnsleys_fern.jar</finalName>
+						</configuration>
+						<phase>package</phase>
+						<goals>
+							<goal>assembly</goal>
+						</goals>
+					</execution>
+
+					<execution>
+						<id>build-b</id>
+						<configuration>
+							<archive>
+								<manifest>
+									<mainClass>dk.jonaslindstrom.ifs.demos.SierpinskiTriangle</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<finalName>sierpinski_triangle.jar</finalName>
+						</configuration>
+						<phase>package</phase>
+						<goals>
+							<goal>assembly</goal>
+						</goals>
+					</execution>
+
+
+					<execution>
+						<id>build-c</id>
+						<configuration>
+							<archive>
+								<manifest>
+									<mainClass>dk.jonaslindstrom.ifs.demos.FractalFlame</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<finalName>fractal_flame.jar</finalName>
+						</configuration>
+						<phase>package</phase>
+						<goals>
+							<goal>assembly</goal>
+						</goals>
+					</execution>
+
+					<execution>
+						<id>build-d</id>
+						<configuration>
+							<archive>
+								<manifest>
+									<mainClass>dk.jonaslindstrom.ifs.demos.FractalFlameMovie</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<finalName>fractal_flame_movie.jar</finalName>
+						</configuration>
+						<phase>package</phase>
+						<goals>
+							<goal>assembly</goal>
+						</goals>
+					</execution>
+
+
+					<execution>
+						<id>build-e</id>
+						<configuration>
+							<archive>
+								<manifest>
+									<mainClass>dk.jonaslindstrom.ifs.demos.DragonCurve</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<finalName>dragon_curve.jar</finalName>
+						</configuration>
+						<phase>package</phase>
+						<goals>
+							<goal>assembly</goal>
+						</goals>
+					</execution>
+
+					<execution>
+						<id>build-f</id>
+						<configuration>
+							<archive>
+								<manifest>
+									<mainClass>dk.jonaslindstrom.ifs.demos.LevyCCurve</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<finalName>levy_c_curve.jar</finalName>
+						</configuration>
+						<phase>package</phase>
+						<goals>
+							<goal>assembly</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
