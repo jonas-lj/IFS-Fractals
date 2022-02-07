@@ -1,5 +1,6 @@
 package dk.jonaslindstrom.ifs.transformations;
 
+import dk.jonaslindstrom.ifs.kernels.ComputationKernel;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 public class LinearTransformation implements Transformation {
@@ -13,7 +14,7 @@ public class LinearTransformation implements Transformation {
   }
 
   @Override
-  public Vector2D apply(Vector2D t) {
+  public Vector2D apply(Vector2D t, ComputationKernel kernel) {
     return new Vector2D(t.dotProduct(x), t.dotProduct(y));
   }
 

@@ -3,52 +3,73 @@ package dk.jonaslindstrom.ifs.demos;
 import dk.jonaslindstrom.ifs.ChaosGame;
 import dk.jonaslindstrom.ifs.image.IO;
 import dk.jonaslindstrom.ifs.image.LogDensity;
+import dk.jonaslindstrom.ifs.image.LogDensityWithClass;
 import dk.jonaslindstrom.ifs.transformations.FractalFlameTransformation;
 import dk.jonaslindstrom.ifs.transformations.Transformation;
+import dk.jonaslindstrom.ifs.transformations.fractalflamevariations.Disc;
+import dk.jonaslindstrom.ifs.transformations.fractalflamevariations.Handkerchief;
+import dk.jonaslindstrom.ifs.transformations.fractalflamevariations.Heart;
+import dk.jonaslindstrom.ifs.transformations.fractalflamevariations.Polar;
+import dk.jonaslindstrom.ifs.transformations.fractalflamevariations.Popcorn;
 import dk.jonaslindstrom.ifs.transformations.fractalflamevariations.Sinusodial;
 import dk.jonaslindstrom.ifs.transformations.fractalflamevariations.Spherical;
+import dk.jonaslindstrom.ifs.transformations.fractalflamevariations.Spiral;
 import dk.jonaslindstrom.ifs.transformations.fractalflamevariations.Swirl;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 public class FractalFlame {
 
-  public static void main(String[] arguments) throws IOException {
+  public static void main(String[] arguments)
+      throws IOException {
 
-    long seed = 1234;
-    Random r = new Random();
-    int n = 25;
-    for (int j = 0; j < n; j++) {
-      seed = r.nextLong();
-      
-      List<Transformation> variations = new ArrayList<>();
-      variations.add(new Sinusodial());
-      variations.add(new Spherical());
-      variations.add(new Swirl());
+    long seed = new BigInteger("d23c14a4138969db", 16).longValue();
 
-      Random random = new Random(seed);
-      List<Transformation> functions = new ArrayList<>();
-      for (int i = 0; i < 5; i++) {
-        functions.add(new FractalFlameTransformation(variations, random));
+    Random random = new Random(seed);
+    double p = random.nextDouble();
+
+    List<Transformation> variations = new ArrayList<>();
+    variations.add(new Disc());
+    variations.add(new Handkerchief());
+    variations.add(new Heart());
+    variations.add(new Polar());
+    variations.add(new Sinusodial());
+    variations.add(new Spherical());
+    variations.add(new Spiral());
+    variations.add(new Swirl());
+    variations.add(new Popcorn(1.0, 1.0));
+
+    List<Transformation> usedVariations = new ArrayList<>();
+    for (Transformation variation : variations) {
+      if (random.nextDouble() < p) {
+        usedVariations.add(variation);
       }
-      ChaosGame ff = new ChaosGame(functions);
-
-      long start = System.currentTimeMillis();
-
-      // int[][] histogram = ff.chaosGame(10000, 2000, new Rectangle2D.Double(-1.5, -3.5, 4.0, 5.0),
-      // new Dimension(2480, 3508));
-      int[][] histogram = ff.chaosGame(10000, 2000, new Rectangle2D.Double(-5.0, -5.0, 10.0, 10.0),
-          new Dimension(2480, 3508));
-      IO.generateImage(histogram, new LogDensity(true), new File("ff" + seed + ".png"));
-      System.out.println("Took " + (System.currentTimeMillis() - start) + "ms");
-
     }
 
+    List<Transformation> functions = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      functions.add(new FractalFlameTransformation(usedVariations, random));
+    }
+
+    // ~15 mins
+    int[][][] histogram = IO.readCSV(7087, 7087, 5, new File("flame_large_02.csv"));
+    histogram = ChaosGame
+        .chaosGameWithClass(functions, histogram, 500000, 200000,
+            new Rectangle2D.Double(-5.0, -5.0, 10.0, 10.0),
+            new Dimension(7087, 7087), new Random(seed), Long.toHexString(seed));
+    IO.writeCSV(histogram, new File("flame_large_01.csv"));
+//    IO.generateImage(histogram, new LogDensityWithClass(colors), new File("ffc" + Long.toHexString(seed) + ".tif"));
+
   }
+
 
 }

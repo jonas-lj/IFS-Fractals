@@ -28,11 +28,10 @@ public class LevyCCurve {
     Complex a = new Complex(0.5, 0.5);
 
     List<Transformation> functions = new ArrayList<>();
-    functions.add(v -> v(c(v).multiply(a)));
-    functions.add(v -> v(a.negate().add(Complex.ONE).multiply(c(v)).add(a)));
+    functions.add((v,k) -> v(c(v).multiply(a)));
+    functions.add((v,k) -> v(a.negate().add(Complex.ONE).multiply(c(v)).add(a)));
 
-    ChaosGame ff = new ChaosGame(functions);
-    int[][] histogram = ff.chaosGame(25000, 2500, new Rectangle2D.Double(-0.6, -0.4, 2.2, 1.5),
+    int[][] histogram = ChaosGame.chaosGame(functions, 25000, 2500, new Rectangle2D.Double(-0.6, -0.4, 2.2, 1.5),
         new Dimension(1100, 750));
     IO.generateImage(histogram, new LogDensity(), new File("lcc.png"));
   }

@@ -1,6 +1,7 @@
 package dk.jonaslindstrom.ifs.transformations;
 
-import java.util.function.UnaryOperator;
+import dk.jonaslindstrom.ifs.kernels.ComputationKernel;
+import java.util.function.BiFunction;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
@@ -10,6 +11,6 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
  * @author Jonas Lindstrøm (jonas.lindstrom@alexandra.dk)
  *
  */
-public interface Transformation extends UnaryOperator<Vector2D> {
+public interface Transformation extends BiFunction<Vector2D, ComputationKernel, Vector2D> {
 
 }

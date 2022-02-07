@@ -1,10 +1,10 @@
 package dk.jonaslindstrom.ifs.transformations.fractalflamevariations;
 
+import dk.jonaslindstrom.ifs.kernels.ComputationKernel;
+import dk.jonaslindstrom.ifs.transformations.Transformation;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.RealDistribution;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-
-import dk.jonaslindstrom.ifs.transformations.Transformation;
 
 public class Chaotic implements Transformation {
 
@@ -19,8 +19,9 @@ public class Chaotic implements Transformation {
   }
 
   @Override
-  public Vector2D apply(Vector2D t) {
-    return new Vector2D(t.getX() + distribution.sample(), t.getY() + distribution.sample());
+  public Vector2D apply(Vector2D t, ComputationKernel kernel) {
+    return new Vector2D(t.getX() + distribution.sample(),
+        t.getY() + distribution.sample());
   }
 
 }

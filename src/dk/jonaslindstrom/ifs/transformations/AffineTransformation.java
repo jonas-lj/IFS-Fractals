@@ -1,5 +1,6 @@
 package dk.jonaslindstrom.ifs.transformations;
 
+import dk.jonaslindstrom.ifs.kernels.ComputationKernel;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 public class AffineTransformation implements Transformation {
@@ -17,8 +18,8 @@ public class AffineTransformation implements Transformation {
   }
 
   @Override
-  public Vector2D apply(Vector2D v) {
-    return translation.apply(linear.apply(v));
+  public Vector2D apply(Vector2D v, ComputationKernel kernel) {
+    return translation.apply(linear.apply(v, kernel), kernel);
   }
 
 }

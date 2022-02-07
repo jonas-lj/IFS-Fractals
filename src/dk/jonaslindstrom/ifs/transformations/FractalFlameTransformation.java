@@ -1,15 +1,15 @@
 package dk.jonaslindstrom.ifs.transformations;
 
+import dk.jonaslindstrom.ifs.kernels.ComputationKernel;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Function;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math3.util.Pair;
 
 public class FractalFlameTransformation implements Transformation {
 
-  private Function<Vector2D, Vector2D> transformation;
+  private Transformation transformation;
 
   public FractalFlameTransformation(double[] affineParameters, double[] postTransformParameters,
       List<Transformation> variations, double... weights) {
@@ -22,8 +22,9 @@ public class FractalFlameTransformation implements Transformation {
 
     Transformation postTransform = new AffineTransformation(postTransformParameters);
 
-    this.transformation =
-        affineTransformation.andThen(new WeightedSum(weightedVariations)).andThen(postTransform);
+    Transformation weightedSum = new WeightedSum(weightedVariations);
+
+    this.transformation = (p,k) -> postTransform.apply(weightedSum.apply(affineTransformation.apply(p,k), k), k);
   }
 
   public FractalFlameTransformation(List<Transformation> variations, Random random) {
@@ -40,8 +41,8 @@ public class FractalFlameTransformation implements Transformation {
   }
 
   @Override
-  public Vector2D apply(Vector2D t) {
-    return transformation.apply(t);
+  public Vector2D apply(Vector2D t, ComputationKernel kernel) {
+    return transformation.apply(t, kernel);
   }
 
 }

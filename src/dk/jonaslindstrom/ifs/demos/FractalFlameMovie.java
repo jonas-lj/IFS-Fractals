@@ -25,7 +25,7 @@ import org.jcodec.api.awt.AWTSequenceEncoder;
 public class FractalFlameMovie {
 
   public static void main(String[] arguments) throws IOException {
-    long seed = 6610345538332962255l;
+    long seed = -5775821812006337474l; //6610345538332962255l;
     int seconds = 32;
     
     List<Transformation> variations = new ArrayList<>();
@@ -41,7 +41,6 @@ public class FractalFlameMovie {
     for (int i = 0; i < 5; i++) {
       functions.add(new FractalFlameTransformation(variations, random));
     }
-    ChaosGame ff = new ChaosGame(functions);
 
     long start = System.currentTimeMillis();
     
@@ -56,8 +55,8 @@ public class FractalFlameMovie {
       v.c = x.getX();
       v.f = x.getY();
       
-      histogram = ff.chaosGame(10000, 1000, new Rectangle2D.Double(-5.0, -5.0, 10.0, 10.0),
-          new Dimension(1000, 1000));
+      histogram = ChaosGame.chaosGame(functions, 10000, 1000, new Rectangle2D.Double(-5.0, -5.0, 10.0, 10.0),
+          new Dimension(800, 800));
       System.out.println(i + "/" + n);
       bi = IO.generateImage(histogram, new LogDensity());
       
