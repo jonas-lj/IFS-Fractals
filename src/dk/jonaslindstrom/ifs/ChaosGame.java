@@ -39,7 +39,16 @@ public class ChaosGame {
     return new Vector2D(x, y);
   }
 
-  public static int[][][] chaosGameWithClass(TransformationWithClassification transformations, int points, int iterations, Rectangle2D.Double area,
+
+  public static int[][][] chaosGameWithClass(List<Transformation> transformations,
+      int points, int iterations, Rectangle2D.Double area,
+      Dimension imageSize, Random random, String name) {
+    return chaosGameWithClass(buildUniformlyDistributedStochasticFunctionSet(transformations),
+        points, iterations, area, imageSize, random, name);
+  }
+
+  public static int[][][] chaosGameWithClass(TransformationWithClassification transformations,
+      int points, int iterations, Rectangle2D.Double area,
       Dimension imageSize, Random random, String name) {
     int[][][] histogram = new int[imageSize.width][imageSize.height][transformations
         .classCount()];

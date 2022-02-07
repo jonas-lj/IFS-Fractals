@@ -60,14 +60,22 @@ public class FractalFlame {
       functions.add(new FractalFlameTransformation(usedVariations, random));
     }
 
-    // ~15 mins
-    int[][][] histogram = IO.readCSV(7087, 7087, 5, new File("flame_large_02.csv"));
-    histogram = ChaosGame
-        .chaosGameWithClass(functions, histogram, 500000, 200000,
+    List<Color> colors = List.of(
+        Color.decode("#204C5B"),
+        Color.decode("#867088"),
+        Color.decode("#00C6A8"),
+        Color.decode("#F59432"),
+        Color.decode("#924755")
+    );
+
+    // ~2 mins
+    //int[][][] histogram = IO.readCSV(7087, 7087, 5, new File("flame_large_02.csv"));
+    int[][][] histogram = ChaosGame
+        .chaosGameWithClass(functions,50000, 20000,
             new Rectangle2D.Double(-5.0, -5.0, 10.0, 10.0),
             new Dimension(7087, 7087), new Random(seed), Long.toHexString(seed));
-    IO.writeCSV(histogram, new File("flame_large_01.csv"));
-//    IO.generateImage(histogram, new LogDensityWithClass(colors), new File("ffc" + Long.toHexString(seed) + ".tif"));
+    //IO.writeCSV(histogram, new File("flame_large_01.csv"));
+    IO.generateImage(histogram, new LogDensityWithClass(colors), new File("ffc" + Long.toHexString(seed) + ".tif"));
 
   }
 
