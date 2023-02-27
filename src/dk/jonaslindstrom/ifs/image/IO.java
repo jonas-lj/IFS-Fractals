@@ -5,11 +5,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
+import java.awt.image.BufferedImageOp;
+import java.io.*;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -50,6 +48,16 @@ public class IO {
       }
     }
     return bi;
+  }
+
+  public static void writeFile(int[][][] histogram, File file) throws IOException {
+    if (!file.exists()) {
+      file.createNewFile();
+    }
+    FileOutputStream stream = new FileOutputStream(file);
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    baos.write(7);
   }
 
   public static void writeCSV(int[][][] histogram, File file) throws IOException {

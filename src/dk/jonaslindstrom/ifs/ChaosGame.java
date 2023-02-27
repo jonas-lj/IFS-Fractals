@@ -1,6 +1,8 @@
 package dk.jonaslindstrom.ifs;
 
 import dk.jonaslindstrom.ifs.image.ConcurrentImageBuffer;
+import dk.jonaslindstrom.ifs.image.ImageBuffer;
+import dk.jonaslindstrom.ifs.image.SparseImageBuffer;
 import dk.jonaslindstrom.ifs.transformations.ClassifiedPoint;
 import dk.jonaslindstrom.ifs.transformations.StochasticFunctionSet;
 import dk.jonaslindstrom.ifs.transformations.Transformation;
@@ -34,6 +36,11 @@ public class ChaosGame {
    * Sample a random point in the plot area.
    */
   private static Vector2D samplePoint(Rectangle2D.Double area, Random random) {
+//    double offset_x = area.getX() + area.getWidth() / 2;
+//    double offset_y = area.getY() + area.getHeight() / 2;
+
+//    double x = offset_x + random.nextGaussian() * 0.1 * area.getWidth();
+//    double y = offset_y + random.nextGaussian() * 0.1 * area.getHeight();
     double x = area.getX() + random.nextDouble() * area.getWidth();
     double y = area.getY() + random.nextDouble() * area.getHeight();
     return new Vector2D(x, y);
@@ -52,18 +59,32 @@ public class ChaosGame {
       Dimension imageSize, Random random, String name) {
     int[][][] histogram = new int[imageSize.width][imageSize.height][transformations
         .classCount()];
-    return chaosGameWithClass(transformations, histogram, points, iterations, area, imageSize, random, name);
+    return chaosGameWithClass(transformations, histogram, points, iterations, area, area, imageSize, random, name);
+  }
+
+  public static int[][][] chaosGameWithClass(TransformationWithClassification transformations,
+      int points, int iterations, Rectangle2D.Double drawArea, Rectangle2D.Double iterationArea,
+      Dimension imageSize, Random random, String name) {
+    int[][][] histogram = new int[imageSize.width][imageSize.height][transformations
+        .classCount()];
+    return chaosGameWithClass(transformations, histogram, points, iterations, drawArea, iterationArea, imageSize, random, name);
+  }
+  public static int[][][] chaosGameWithClass(List<Transformation> transformations,
+      int points, int iterations, Rectangle2D.Double drawArea, Rectangle2D.Double iterationArea,
+      Dimension imageSize, Random random, String name) {
+    return chaosGameWithClass(buildUniformlyDistributedStochasticFunctionSet(transformations),
+        points, iterations, drawArea, iterationArea, imageSize, random, name);
   }
 
   public static int[][][] chaosGameWithClass(TransformationWithClassification transformations, int[][][] histogram, int points, int iterations,
-      Rectangle2D.Double area, Dimension imageSize, Random random, String name) {
+      Rectangle2D.Double drawArea, Rectangle2D.Double iterationArea, Dimension imageSize, Random random, String name) {
 
-    double scaleX = imageSize.getWidth() / area.getWidth();
-    double scaleY = imageSize.getHeight() / area.getHeight();
-    Function<Vector2D, Point> toPixel = v -> new Point((int) ((v.getX() - area.getX()) * scaleX),
-        (int) ((v.getY() - area.getY()) * scaleY));
+    double scaleX = imageSize.getWidth() / drawArea.getWidth();
+    double scaleY = imageSize.getHeight() / drawArea.getHeight();
+    Function<Vector2D, Point> toPixel = v -> new Point((int) ((v.getX() - drawArea.getX()) * scaleX),
+        (int) ((v.getY() - drawArea.getY()) * scaleY));
 
-    ConcurrentImageBuffer buffer = new ConcurrentImageBuffer(histogram);
+    ImageBuffer buffer = new ConcurrentImageBuffer(histogram);
 
     ProgressBar pb = new ProgressBar(name, points);
     pb.start();
@@ -72,13 +93,15 @@ public class ChaosGame {
      * We ignore the first 20 iterations. This allows the sequence to move close enough to the fixed
      * set of the IFS before we allow the sequence to contribute to the histogram.
      */
-    Stream.generate(() -> samplePoint(area, random)).peek(i -> pb.step()).parallel().limit(points)
+    Stream.generate(() -> samplePoint(drawArea, random)).peek(i -> pb.step()).parallel().limit(points)
         .map(ClassifiedPoint::new).forEach(q -> Stream
-        .iterate(q, p -> area.contains(p.getX(), p.getY()),
+        .iterate(q, p -> iterationArea.contains(p.getX(), p.getY()),
             p -> transformations.applyWithClass(p, null))
         .skip(20).limit(iterations).forEach(p -> {
-          Point px = toPixel.apply(p);
-          buffer.update(px.x, px.y, p.getClassification());
+          if (drawArea.contains(p.getX(), p.getY())) {
+            Point px = toPixel.apply(p);
+            buffer.update(px.x, px.y, p.getClassification());
+          }
         }));
 
     pb.stop();
@@ -124,6 +147,13 @@ public class ChaosGame {
         new int[imageSize.width][imageSize.height]);
   }
 
+  public static int[][] chaosGame(List<Transformation> transformations, int points, int iterations, Rectangle2D.Double area,
+      Dimension imageSize, Random random, String name) {
+    return chaosGame(buildUniformlyDistributedStochasticFunctionSet(transformations), points, iterations, area, imageSize, random, name,
+        new int[imageSize.width][imageSize.height]);
+  }
+
+
   public static int[][][] chaosGameWithClass(TransformationWithClassification transformations, int points, int iterations, Rectangle2D.Double area,
       Dimension imageSize, String name) {
     return chaosGameWithClass(transformations, points, iterations, area, imageSize, new Random(), name);
@@ -146,10 +176,15 @@ public class ChaosGame {
 
   public static int[][][] chaosGameWithClass(List<Transformation> transformations, int[][][] histogram, int points, int iterations,
       Rectangle2D.Double area, Dimension imageSize, Random random, String name) {
-    return chaosGameWithClass(buildUniformlyDistributedStochasticFunctionSet(transformations), histogram, points, iterations, area, imageSize, random, name);
+    return chaosGameWithClass(buildUniformlyDistributedStochasticFunctionSet(transformations), histogram, points, iterations, area, area, imageSize, random, name);
   }
 
-    public static int[][][] chaosGameWithClass(List<Transformation> transformations, int points, int iterations,
+  public static int[][][] chaosGameWithClass(List<Transformation> transformations, int[][][] histogram, int points, int iterations,
+      Rectangle2D.Double drawArea, Rectangle2D.Double iterationArea, Dimension imageSize, Random random, String name) {
+    return chaosGameWithClass(buildUniformlyDistributedStochasticFunctionSet(transformations), histogram, points, iterations, drawArea, iterationArea, imageSize, random, name);
+  }
+
+  public static int[][][] chaosGameWithClass(List<Transformation> transformations, int points, int iterations,
       Rectangle2D.Double area, Dimension imageSize, String name) {
     return chaosGameWithClass(buildUniformlyDistributedStochasticFunctionSet(transformations), points, iterations, area, imageSize, new Random(), name);
   }

@@ -20,9 +20,6 @@ import org.apache.commons.math3.util.Pair;
 /**
  * Demo application generating <a href="https://en.wikipedia.org/wiki/Barnsley_fern">Barnsley's
  * fern</a> using the {@link ChaosGame}.
- * 
- * @author Jonas Lindstrøm (jonas.lindstrom@alexandra.dk)
- *
  */
 public class BarnsleysFern {
 

@@ -4,6 +4,7 @@ import dk.jonaslindstrom.ifs.kernels.ComputationKernel;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import org.apache.commons.math3.distribution.EnumeratedIntegerDistribution;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math3.util.Pair;
@@ -17,9 +18,7 @@ public class StochasticFunctionSet implements TransformationWithClassification {
       double[] probabilities,
       long seed) {
     this.transformations = transformations;
-    this.distribution = new EnumeratedIntegerDistribution(
-        IntStream.range(0, transformations.size()).toArray(),
-        probabilities);
+    this.distribution = new EnumeratedIntegerDistribution(IntStream.range(0, transformations.size()).toArray(), probabilities);
     this.distribution.reseedRandomGenerator(seed);
   }
 
@@ -46,5 +45,6 @@ public class StochasticFunctionSet implements TransformationWithClassification {
   public int classCount() {
     return transformations.size();
   }
+
 
 }

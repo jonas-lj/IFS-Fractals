@@ -18,8 +18,6 @@ import org.apache.commons.math3.util.Pair;
 
 /**
  * Demo application generating <a href="https://en.wikipedia.org/wiki/Tinkerbell_map">Tinkerbell map</a> using the {@link ChaosGame}.
- * 
- * @author Jonas Lindstrøm (jonas.lindstrom@alexandra.dk)
  */
 public class TinkerbellMap {
 

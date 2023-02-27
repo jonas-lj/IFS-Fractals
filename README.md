@@ -20,11 +20,17 @@ Currently, the library has demos to make images of attractors of the following s
 # Images
 Below are outputs from some of the demos. All source code can be found in the [demo-folder](src/dk/jonaslindstrom/ifs/demos)
 
-![Fractal flame](images/ff.tif)
+![Sierpinski's triangle](images/st.png)
+Sierpinski's triangle.
+
+![Fractal flame](images/ff.png)
 Fractal flame.
 
 ![Barnsley's fern](images/bf.png)
 Barnsley's fern.
+
+![N-Flake](images/pf.png)
+Tinkerbell Map.
 
 ![Dragon curve](images/dc.png)
 Dragon curve.
@@ -32,7 +38,13 @@ Dragon curve.
 ![Levy C Curve](images/lcc.png)
 Levy C Curve.
 
-![Sierpinski's triangle](images/st.png)
-Sierpinski's triangle.
+![Ikeda Map](images/im.png)
+Ikeda Map.
+
+![Tinkerbell Map](images/tm.png)
+Tinkerbell Map.
+
+![Bogdanoc Map](images/bm.png)
+Bogdanov Map.
 
 /Jonas (mail@jonaslindstrom.dk)

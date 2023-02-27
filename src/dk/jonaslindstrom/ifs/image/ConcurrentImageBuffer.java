@@ -1,21 +1,17 @@
 package dk.jonaslindstrom.ifs.image;
 
-import java.util.Collection;
+import java.awt.Dimension;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ConcurrentImageBuffer {
+public class ConcurrentImageBuffer implements ImageBuffer {
 
   private final int[][][] buffer;
-  private final ConcurrentLinkedQueue<Update> queue;
-  private final AtomicInteger counter;
-  private final int limit = 10000000;
-
+  private final int[] dimensions;
 
   public ConcurrentImageBuffer(int[][][] buffer) {
     this.buffer = buffer;
-    this.queue = new ConcurrentLinkedQueue<>();
-    this.counter = new AtomicInteger();
+    this.dimensions = new int[] {buffer.length, buffer[0].length, buffer[0][0].length};
   }
 
   public ConcurrentImageBuffer(int width, int height, int depth) {
@@ -23,32 +19,20 @@ public class ConcurrentImageBuffer {
   }
 
   public void update(int x, int y, int z) {
-    this.queue.add(new Update(x, y, z));
-    if (counter.incrementAndGet() > limit) {
-      flush();
+    if (x < 0 || x >= dimensions[0] || y < 0 || y >= dimensions[1] || z < 0 || z >= dimensions[2]) {
+      return;
     }
-  }
 
-  private synchronized void flush() {
-    while (!queue.isEmpty()) {
-      Update update = queue.poll();
-      buffer[update.x][update.y][update.z]++;
-    }
-    counter.set(0);
-  }
-
-  private static class Update {
-    private final int x, y, z;
-    private Update(int x, int y, int z) {
-      this.x = x;
-      this.y = y;
-      this.z = z;
-    }
+    // There's a small possibility that two threads will write to the same entry at the same time but we ignore that.
+    buffer[x][y][z]++;
   }
 
   public int[][][] getBuffer() {
-    flush();
     return buffer;
+  }
+
+  public int get(int x, int y, int z) {
+    return buffer[x][y][z];
   }
 
 }
