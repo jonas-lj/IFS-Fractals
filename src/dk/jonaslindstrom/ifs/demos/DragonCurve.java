@@ -3,6 +3,7 @@ package dk.jonaslindstrom.ifs.demos;
 import dk.jonaslindstrom.ifs.ChaosGame;
 import dk.jonaslindstrom.ifs.image.Binary;
 import dk.jonaslindstrom.ifs.image.IO;
+import dk.jonaslindstrom.ifs.image.LogDensity;
 import dk.jonaslindstrom.ifs.transformations.AffineTransformation;
 import dk.jonaslindstrom.ifs.transformations.LinearTransformation;
 import dk.jonaslindstrom.ifs.transformations.Transformation;
@@ -29,7 +30,7 @@ public class DragonCurve {
 
     int[][] histogram = ChaosGame.chaosGame(functions, 5000, 1000, new Rectangle2D.Double(-0.5, -0.5, 2.0, 1.5),
         new Dimension(1000, 750));
-    IO.generateImage(histogram, new Binary(), new File("dc.png"));
+    IO.generateImage(histogram, new LogDensity(), new File("dc.png"));
   }
 
 }
